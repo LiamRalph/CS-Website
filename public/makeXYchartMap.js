@@ -111,9 +111,7 @@ function renderGraph(matchID, data){
   
   renderCount += 1;
   if(renderCount == mapCount){
-    console.log(matchID+"ChartText");
     document.getElementById(matchID+"ChartText").innerText = '';
-    console.log(document.getElementById(matchID+"ChartText"))
   }
 
 }
