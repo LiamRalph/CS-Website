@@ -25,7 +25,7 @@ body
 				div(class= "ChartText" id=key.toString()+"ChartText") Not Loading or Missing Map? Map data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
 				div(class="LegendContainer", id="LegendContainer"+key)
 				|
-				div(class="Chart", id=key.toString(), data!=val) 
+				div(class="Chart", id=key.toString(), data!=val, winner=matches[key].winner) 
 				
 				
 					

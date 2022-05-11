@@ -93,7 +93,7 @@ module.exports = function(app){
         for(var i=0; i < matchIDs.length; i++){
             let matchID = matchIDs[i];
             const Query = {
-                text: "SELECT Map.mapnumber, rs.round, rs.tick, rs.ctprobabilitymap, ROW_NUMBER() OVER(PARTITION BY mapnumber ORDER BY mapnumber,round, tick)::int as gameTick from roundstates RS inner join maps Map on Map.mapid = RS.mapid inner join matches Mat on Mat.matchid = Map.matchid where Mat.matchid = $1 order by Map.mapnumber ASC;",
+                text: "SELECT Map.mapnumber, rs.round, rs.tick, CASE WHEN (SELECT name from teams where teamid = Map.winnerid ) = Mat.winner THEN CASE WHEN Map.winnerstart = 'CT' then rs.ctprobabilitymap ELSE rs.tprobabilitymap END WHEN (SELECT name from teams where teamid = Map.winnerid ) != Mat.winner THEN CASE WHEN Map.winnerstart = 'T' then rs.ctprobabilitymap ELSE rs.tprobabilitymap END END as probabilitymap,ROW_NUMBER() OVER(PARTITION BY mapnumber ORDER BY mapnumber,round, tick)::int as gameTick from roundstates RS inner join maps Map on Map.mapid = RS.mapid inner join matches Mat on Mat.matchid = Map.matchid where Mat.matchid = $1 order by Map.mapnumber ASC;",
                 values: [matchID.matchid],
             } 
             const res = await pool.query(Query);

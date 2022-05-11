@@ -7,9 +7,10 @@ for(var i=0; i < matches.length; i++){
   let matchID = matches[i].matchid;
   let matchElement = document.getElementById(matchID);
   let data = JSON.parse(matchElement.getAttribute('data'))
-  
+  let winner = matchElement.getAttribute('winner');
+
   if(data.length > 0){
-    renderGraph(matchID, data)
+    renderGraph(matchID, winner, data)
   }
 
     
@@ -20,7 +21,7 @@ for(var i=0; i < matches.length; i++){
   document.getElementById(matchID).setAttribute("data", "[]")
 }
 
-function renderGraph(matchID, data){
+function renderGraph(matchID, winner, data){
   let renderCount = 0;
   var json = { ticks: data}
   let mapCount = Math.max.apply(this, [...new Set(json.ticks.map(ticks => ticks.mapnumber))]);
@@ -38,7 +39,7 @@ function renderGraph(matchID, data){
   );
   var yAxis = chart.yAxes.push(
     am5xy.ValueAxis.new(root, {
-      valueField: "ctprobabilitymap",
+      valueField: "probabilitymap",
       min: 0,
       max: 1.0,
       renderer: am5xy.AxisRendererY.new(root, {})
@@ -74,14 +75,14 @@ function renderGraph(matchID, data){
       continue
     }
     let lastTick = mapData.at(-1).gametick
-    mapData = mapData.map(t => ({gametick: t.gametick/lastTick, ctprobabilitymap: t.ctprobabilitymap}));
+    mapData = mapData.map(t => ({gametick: t.gametick/lastTick, probabilitymap: t.probabilitymap}));
 
     var series = chart.series.push(
       am5xy.SmoothedXYLineSeries.new(root, {
-        name: "CTWinProb Map " + mapNo,
+        name: winner.charAt(0).toUpperCase() + winner.slice(1) +" Win% Map " + mapNo,
         xAxis: xAxis,
         yAxis: yAxis,
-        valueYField: "ctprobabilitymap",
+        valueYField: "probabilitymap",
         valueXField: "gametick"
       })
     );
