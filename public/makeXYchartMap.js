@@ -5,7 +5,7 @@ let matches = JSON.parse(document.currentScript.getAttribute('ids'));
 for(var i=0; i < matches.length; i++){
     
   let matchID = matches[i].matchid;
-  let matchElement = document.getElementsByClassName("Chart")[i];
+  let matchElement = document.getElementById(matchID);
   let data = JSON.parse(matchElement.getAttribute('data'))
   
   if(data.length > 0){
@@ -63,7 +63,7 @@ function renderGraph(matchID, data){
   
  
 
-  let colours = [ 0xff0000, 0x0000FF, 0x000000, 0x07BC8E, 0xBC078E, 0x00FF00, 0xBC8E07]
+  let colours = [ 0x0000FF, 0xff0000, 0x00FF00, 0x000000, 0xC90076, 0xBC4400, 0xBCA200]
 
 
   for(var i=0; i < mapCount; i++){
