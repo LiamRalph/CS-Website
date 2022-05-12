@@ -49,18 +49,10 @@ function renderGraph(matchID, winner, data){
     am5xy.ValueAxis.new(root, {
       valueField: "round",
       min: 0,
-      max: 1.0,
       renderer: am5xy.AxisRendererX.new(root, {}),
     })
   );
-  let yRenderer = yAxis.get("renderer");
-  yRenderer.labels.template.setAll({
 
-  });
-  let xRenderer = xAxis.get("renderer");
-  xRenderer.labels.template.setAll({
-    visible: false
-  });
   
  
 
@@ -74,9 +66,9 @@ function renderGraph(matchID, winner, data){
     if(mapData.length == 0){
       continue
     }
-
+    
     mapData = mapData.map(t => ({probabilitymap: t.probabilitymap, round: t.round}));
-
+    
     var series = chart.series.push(
       am5xy.SmoothedXYLineSeries.new(root, {
         name: winner.charAt(0).toUpperCase() + winner.slice(1) +" Win% Map " + mapNo,
