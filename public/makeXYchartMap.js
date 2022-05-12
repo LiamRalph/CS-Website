@@ -23,8 +23,8 @@ for(var i=0; i < matches.length; i++){
 
 function renderGraph(matchID, winner, data){
   let renderCount = 0;
-  var json = { ticks: data}
-  let mapCount = Math.max.apply(this, [...new Set(json.ticks.map(ticks => ticks.mapnumber))]);
+  var json = {rounds: data}
+  let mapCount = Math.max.apply(this, [...new Set(json.rounds.map(rounds => rounds.mapnumber))]);
   
   
  
@@ -61,7 +61,7 @@ function renderGraph(matchID, winner, data){
 
   for(var i=0; i < mapCount; i++){
     let mapNo = i+1
-    let mapData = json.ticks.filter(t => t.mapnumber == mapNo);
+    let mapData = json.rounds.filter(t => t.mapnumber == mapNo);
     
     if(mapData.length == 0){
       continue
