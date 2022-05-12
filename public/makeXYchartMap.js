@@ -47,7 +47,7 @@ function renderGraph(matchID, winner, data){
   );
   var xAxis = chart.xAxes.push(
     am5xy.ValueAxis.new(root, {
-      valueField: "gametick",
+      valueField: "round",
       min: 0,
       max: 1.0,
       renderer: am5xy.AxisRendererX.new(root, {}),
@@ -74,8 +74,8 @@ function renderGraph(matchID, winner, data){
     if(mapData.length == 0){
       continue
     }
-    let lastTick = mapData.at(-1).gametick
-    mapData = mapData.map(t => ({gametick: t.gametick/lastTick, probabilitymap: t.probabilitymap}));
+
+    mapData = mapData.map(t => ({probabilitymap: t.probabilitymap, round: t.round}));
 
     var series = chart.series.push(
       am5xy.SmoothedXYLineSeries.new(root, {
@@ -83,7 +83,7 @@ function renderGraph(matchID, winner, data){
         xAxis: xAxis,
         yAxis: yAxis,
         valueYField: "probabilitymap",
-        valueXField: "gametick"
+        valueXField: "round"
       })
     );
     series.data.setAll(mapData);
