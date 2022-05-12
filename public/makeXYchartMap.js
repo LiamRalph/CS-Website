@@ -81,7 +81,7 @@ function renderGraph(matchID, winner, data){
     series.data.setAll(mapData);
     series.set("stroke", am5.color(colours[i]));
     series.set("fill", am5.color(colours[i]));
-    
+    renderCount += 1;
   }
 
 
@@ -100,9 +100,6 @@ function renderGraph(matchID, winner, data){
   legend.data.setAll(chart.series.values);
 
   
-
-  
-  renderCount += 1;
   if(renderCount == mapCount){
     document.getElementById(matchID+"ChartText").innerText = '';
   }
