@@ -19,7 +19,8 @@ module.exports = function(app){
         let lastMatchChartData = await getMatchDayChartData(lastMatchDayIDs);
         let matchData = await getMatchData(lastMatchDayIDs);
         let beforeAndAfterDates = await getDateBeforeAfter(lastDate);
-        res.render("pages/index", {date: lastDate, beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: lastMatchDayIDs, matchData: lastMatchChartData}); 
+        lastMatchDayIDs =lastMatchDayIDs.map(i => ({matchid: i.matchid-2356097}));
+        res.render("pages/index", {date: new Date(lastDate).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'}), beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: lastMatchDayIDs, matchData: lastMatchChartData}); 
 
     });
 
@@ -31,7 +32,8 @@ module.exports = function(app){
         let matchData = await getMatchData(matchDayIDs);
         let beforeAndAfterDates = await getDateBeforeAfter(day);
         if(matchDayIDs.length > 0){
-            res.render("pages/index", {date: day, beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: matchDayIDs, matchData: matchChartData});
+            matchDayIDs = matchDayIDs.map(i => ({matchid: i.matchid-2356097}));
+            res.render("pages/index", {date: new Date(day).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'}), beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: matchDayIDs, matchData: matchChartData});
         }
         else{
             //res.render("pages/NoMatches");
@@ -93,16 +95,16 @@ module.exports = function(app){
         for(var i=0; i < matchIDs.length; i++){
             let matchID = matchIDs[i];
             const Query = {
-                text: "SELECT Map.mapnumber, r.round, CASE WHEN Map.winnerstart='ct' THEN CASE WHEN Map.winnerid = T.teamid THEN R.ctprobabilitymap ELSE R.tprobabilitymap END ELSE CASE WHEN Map.winnerid = T.teamid THEN R.tprobabilitymap ELSE R.ctprobabilitymap END END as probabilitymap from rounds R inner join maps Map on Map.mapid = R.mapid inner join matches Mat on Mat.matchid = Map.matchid inner join teams T on T.name = Mat.winner where Mat.matchid = $1 order by Map.mapnumber ASC;",
-                values: [matchID.matchid],
+                text: "((SELECT Map.mapnumber, Map.mapname, 0 as lowScore, 0 as highScore, 1 as round, CASE WHEN Map.winnerstart='ct' THEN CASE WHEN Map.winnerid = T.teamid THEN R.ctprobabilitymap ELSE R.tprobabilitymap END ELSE CASE WHEN Map.winnerid = T.teamid THEN R.tprobabilitymap ELSE R.ctprobabilitymap END END as probabilitymap from rounds R inner join maps Map on Map.mapid = R.mapid inner join rounds R2 on R2.mapid = R.mapid and R2.round = R.round-1 inner join matches Mat on Mat.matchid = Map.matchid inner join teams T on T.name = Mat.winner where Mat.matchid = $1 and R2.round = 1 order by Map.mapnumber ASC)UNION ALL(SELECT Map.mapnumber, Map.mapname, COALESCE(CASE WHEN R2.winnerscore >= R2.loserscore THEN R2.loserscore ELSE R2.winnerscore END, 0) as lowScore, COALESCE(CASE WHEN R2.winnerscore > R2.loserscore THEN R2.winnerscore ELSE R2.loserscore END, 0) as highScore, coalesce(r.round, 1) as round, CASE WHEN Map.winnerstart='ct' THEN CASE WHEN Map.winnerid = T.teamid THEN R2.ctprobabilitymap ELSE R2.tprobabilitymap END ELSE CASE WHEN Map.winnerid = T.teamid THEN R2.tprobabilitymap ELSE R2.ctprobabilitymap END END as probabilitymap from rounds R inner join maps Map on Map.mapid = R.mapid inner join rounds R2 on R2.mapid = R.mapid and R2.round = R.round-1 inner join matches Mat on Mat.matchid = Map.matchid inner join teams T on T.name = Mat.winner where Mat.matchid = $2 order by Map.mapnumber ASC));",
+                values: [matchID.matchid, matchID.matchid],
             } 
             const res = await pool.query(Query);
 
             if (res.rows.length > 0 && res.rows[0].round == 1){
-                matches[matchID.matchid] = res.rows;
+                matches[matchID.matchid-2356097] = res.rows;
             }
             else{
-                matches[matchID.matchid] = [];
+                matches[matchID.matchid-2356097] = [];
             }
             
         }
@@ -122,7 +124,7 @@ module.exports = function(app){
             } 
             const res = await pool.query(Query);
 
-            matches[matchID.matchid] = res.rows[0];
+            matches[matchID.matchid-2356097] = res.rows[0];
         }
         return matches
 

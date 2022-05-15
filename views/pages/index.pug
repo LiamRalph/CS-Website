@@ -1,6 +1,6 @@
 html
 	head
-		title CSGO Map Win Probabilities
+		title CS Reference
 		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
 		script(src="https://cdn.amcharts.com/lib/5/index.js")
 		script(src="https://cdn.amcharts.com/lib/5/xy.js")
@@ -11,17 +11,17 @@ body
 
 	div(class='main', id='main')
 		
-		h1 
+		h1(class="navBar")
 			|
 			if beforeAndAfter.before
-				a(href='/date/'+beforeAndAfter.before) Previous Day 
-			| #{date}
+				a(class="dateNav", href='/date/'+beforeAndAfter.before) Previous Day 
+			| &nbsp  #{date} &nbsp
 			if beforeAndAfter.after
-				a(href='/date/'+beforeAndAfter.after)  Next Day 
+				a(class="dateNav", href='/date/'+beforeAndAfter.after) Next Day 
 		each val, key in matchData
 			h1(name=key, class="MatchChart")
 				|
-				a(href='/matches/'+key) #{matches[key].winner} vs. #{matches[key].loser} @ #{matches[key].tournamentname} 
+				a(class="matchLink", href='/matches/'+key) #{matches[key].winner} vs. #{matches[key].loser} @ #{matches[key].tournamentname} 
 				div(class= "ChartText" id=key.toString()+"ChartText") Not Loading or Missing Map? Map data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
 				div(class="LegendContainer", id="LegendContainer"+key)
 				|
