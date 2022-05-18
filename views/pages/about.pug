@@ -1,0 +1,34 @@
+html
+	head
+		title CS Reference
+		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
+		script(src="https://cdn.amcharts.com/lib/5/index.js")
+		script(src="https://cdn.amcharts.com/lib/5/xy.js")
+		style 	
+			include ../style/style.css
+body
+	include ../partials/header
+
+	div(class='main', id='main')
+		
+		h1(class="Title") 
+			| About
+		h1(class="Title") 
+			| Map Model
+		p The model is a gradient boosted classifier built with XGBoost. It is trained on an ~130,000 round, ~6000 Map dataset of tier 1 professional games from 2015-2022. The dataset includes attributes such as Current Score, Loss Streaks, Players alive at the end of the previous round, Team Money, and Current Map. It does not take into account a tams current side, but their starting side. I've found that starting side is a more accurate predictor, which I assume can be attributed to physocological effects, playing t side first and losing the first half leads you to force buy more often out of desperation, but I could be wrong. The model has a logloss of 0.51420.  
+
+		h1 
+			| Overtime 
+		p The model is not great at predicting overtime. This is for a few reasons, the biggest being that the model heavily weighs the current economy of teams, which doesn't really matter in overtime. Another reason is that not only are there much fewer overtime games to train on, but overtime rules are far from consistent, further skewing an already small dataset. 
+		
+		h1 
+			| Unintuitive Results
+		p You may sometimes see a team win a round, but have their win chance decrease. This is the model highly valuing economy over everything else. While score is the determining factor for winning, it doesn't tell the whole story. Winning or barely losing a given round could lead to breaking a teams economy and effectively count as 2+ round wins, likely against saving opponents. Eco frags also greatly affect the model as killing a saving target only gains the kill reward and removes ~$800 in equipment value, getting an eco frag on the other hand grants you the same kill reward but also removes potentially $4000+ worth of equipment value. Killing one player with just a rifle and armour, with each player spending $800 can actually be a good round. These unintuitive results can also be observed with sportsbooks live odds changes. 
+
+		h1 
+			| Improvements
+		p To increase model accuracy, I think different sections of maps would need to be broken up into chunks, one for pistol rounds and early in the half, one for when actual buy vs buy rounds happen, one for when a team is nearing victory, and a seperate model for overtime. I have also tried calculating map win probability the same way I did for rounds, taking into account the current rounds win chance, unfortunately it would require too much computing power and take a lot longer to train, and a lot longer to predict each map. There is also a large amount of collinearity between round and map win chances, so I decided to keep them seperate.
+
+	include ../partials/footer
+
+
