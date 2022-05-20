@@ -105,8 +105,8 @@ async function renderRound(){
     for(let i = 0; i < data.length; i++){
       if(data[i].expectedkill > 0){
         data[i].showBullets = true
-        if(data[i].probabilitychange == 50){
-          data[i].probabilitychange = 100;
+        if(data[i].probabilitychange == 100){
+          data[i].probabilitychange = "Win";
         }
       }
       else{
@@ -131,7 +131,7 @@ async function renderRound(){
           sprite: am5.Circle.new(root, {
             radius: 5,
             fill: am5.color(0x000000),
-            tooltipText: "[bold] {attacker} kills {victim} - {teammembersalive} vs {opponentsalive} - xKill {expectedkill} \n tick {tick} - {probabilitytick}% ± {probabilitychange}%  ",
+            tooltipText: "[bold] {attacker} kills {victim} - {teammembersalive} vs {opponentsalive} - xKill {expectedkill} \n tick {tick} - {probabilitytick}% ± {probabilitychange}  ",
             tooltip: am5.Tooltip.new(root, {
               scale: 1,
               
