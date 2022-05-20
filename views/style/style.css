@@ -1,6 +1,11 @@
 .header {
     text-align:center;
-  }
+}
+.footer {
+    font-size: 10pt;
+    text-align:center;
+}
+
 h1.Title{
     font-size: 40pt;
     margin-bottom: 0%;
@@ -11,21 +16,13 @@ h1.NavBar{
     margin-bottom: 2%;
     margin-top: 0%;
 }
-img.featureGraph{
-    width: 1080px;
-    height: auto;
-    margin-bottom: 0%;
-    margin-top: 0%;
-    object-fit: contain;
-}
 
-.footer {
-    font-size: 10pt;
-    text-align:center;
-}
-.ChartText {
+
+
+div.NoDataText{
     font-size: medium;
 }
+
 .Chart{
     width: 95%;
     height: 50%;
@@ -40,7 +37,9 @@ body {
 a {
     color: black;
 }
-
+a.matchLink {
+    font-size: 32pt;
+}
 h1.date{
     font-size: 40pt;
 }
@@ -53,12 +52,16 @@ a.dateNav{
     font-size: 32pt;
 }
 
-h1.MatchChart{
+div.MatchChart{
     font-size: 32pt;
     margin-bottom: 0%;
     margin-top: 0%;
 }
-
+div.Matches{
+    font-size: 32pt;
+    margin-bottom: 0%;
+    margin-top: 0%;
+}
 
 div.LegendContainer{
     margin-bottom: 0%;

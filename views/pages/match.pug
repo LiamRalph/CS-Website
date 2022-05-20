@@ -1,32 +1,44 @@
 html
 	head
-		title CS Reference
+		title #{maps[0].winner} vs. #{maps[0].loser}
 		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
 		script(src="https://cdn.amcharts.com/lib/5/index.js")
 		script(src="https://cdn.amcharts.com/lib/5/xy.js")
 		style 	
 			include ../style/style.css
-body(onload="main()")
+body(onload="renderMap()")
 	include ../partials/header
 
 	div(class='main', id='main', ids=matchID)
 			
-			h1(id="Match"+matchID[0].matchid+"Container", class="MatchChart")
-			|
-			h1(class="Title") #{maps[matchID[0].matchid][0].winner} vs. #{maps[matchID[0].matchid][0].loser} @ #{maps[matchID[0].matchid][0].tournamentname} 
-			a(href='/date/'+maps[matchID[0].matchid][0].date, class="dateNav") #{date}
-			each map in maps[matchID[0].matchid]
-				h1(class="mapScore") #{map.mapname} - #{map.name} win #{map.winnerrounds} - #{map.loserrounds}
-			h1(id=matchID[0].matchid+"Container", class="MatchChart")
+			h1(class="Title") #{maps[0].winner} vs. #{maps[0].loser} @ #{maps[0].tournamentname} 
+			a(href='/date/'+maps[0].date, class="dateNav") #{date}
+			each map in maps
+				h1(class="mapScore", rounds=map.winnerrounds + map.loserrounds) #{map.mapname} - #{map.name} win #{map.winnerrounds} - #{map.loserrounds}
 				|
-				div(class= "ChartText" id=matchID[0].matchid.toString()+"ChartText") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
-				div(class="LegendContainer", id="LegendContainer"+matchID[0].matchid)
-				div(class="Chart", id=matchID[0].matchid.toString(), winner=maps[matchID[0].matchid][0].winner) 
+			div(id=matchID+"Container", class="MatchChart")
+				|
+				h1(class="Title") Map Win Probabilities
+				div(class= "NoDataText" id=matchID+"ChartText") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
+				div(class="LegendContainer", id="LegendContainer"+matchID)
+				div(class="Chart", id=matchID.toString(), winner=maps[0].winner) 
+			
+			div(id=matchID+"Container", class="MapChart")
+				|
+				h1(class="Title") Round Win Probabilities
+
+				select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
+					option() -- Select a Map -- 
+					each val in maps
+						option=val.mapname
+				select(name='dropDown', id='RoundSelect', onchange="renderRound()")
+
 				
-				
-					
+				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
 			br
+			div(class= "NoDataText" id=matchID+"ChartTextRound") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
 	script(src="/makeXYchartMap.js")
+	script(src="/makeXYchartRound.js")
 	include ../partials/footer
 
 

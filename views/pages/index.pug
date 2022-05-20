@@ -18,19 +18,11 @@ body(onload="main()")
 			| &nbsp  #{date} &nbsp
 			if beforeAndAfter.after
 				a(class="dateNav", href='/date/'+beforeAndAfter.after) Next Day 
-		each key in matchIDs
-			h1(id=key.matchid+"Container", class="MatchChart")
+			div(class="Matches")
 				|
-				a(class="matchLink", href='/match/'+key.matchid) #{matches[key.matchid].winner} vs. #{matches[key.matchid].loser} @ #{matches[key.matchid].tournamentname} 
-				div(class= "ChartText" id=key.matchid.toString()+"ChartText") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
-				div(class="LegendContainer", id="LegendContainer"+key.matchid)
-				|
-				div(class="Chart", id=key.matchid.toString(), winner=matches[key.matchid].winner) 
-				
-				
-					
-			br
-	script(src="/makeXYchartMap.js")
+				each key in matchIDs
+					a(class="matchLink", href='/match/'+key.matchid) #{matches[key.matchid].winner} vs. #{matches[key.matchid].loser} @ #{matches[key.matchid].tournamentname} 
+					br
 	include ../partials/footer
 
 

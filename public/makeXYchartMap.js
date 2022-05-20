@@ -1,31 +1,23 @@
 
 
-async function main(){
-  let matches = JSON.parse(document.getElementsByClassName('main')[0].getAttribute('ids'));
+async function renderMap(){
+  let matchID = JSON.parse(document.getElementsByClassName('main')[0].getAttribute('ids'));
 
-  for(var i=0; i < matches.length; i++){
-    let matchID = matches[i].matchid;
-    let matchElement = document.getElementById(matchID);
-    
-    let winner = matchElement.getAttribute('winner');
-    let res = await fetch("/data/"+matchID);
-    dataJSON = await res.json();
-    if(dataJSON[matchID].length > 0){
-      await renderGraph(matchID, winner, dataJSON);
-    }
+  let matchElement = document.getElementById(matchID);
+  let winner = matchElement.getAttribute('winner');
+  let res = await fetch("/data/match/"+matchID);
+  dataJSON = await res.json();
+  if(dataJSON.length > 0){
+    await renderGraph(matchID, winner, dataJSON);
+  }
       
-  }
-
-  for(var i=0; i < matches.length; i++){
-    let matchID = matches[i].matchid;
-    document.getElementById(matchID).setAttribute("data", "[]")
-  }
+  
 
   async function renderGraph(matchID, winner, data){
     let renderCount = 0;
   
-    let mapCount = Math.max.apply(this, [...new Set(data[matchID].map(rounds => rounds.mapnumber))]);
-    let roundMax = Math.max.apply(this, [...new Set(data[matchID].map(rounds => rounds.round))]);
+    let mapCount = Math.max.apply(this, [...new Set(data.map(rounds => rounds.mapnumber))]);
+    let roundMax = Math.max.apply(this, [...new Set(data.map(rounds => rounds.round))]);
     
   
 
@@ -90,7 +82,7 @@ async function main(){
 
     for(var i=0; i < mapCount; i++){
       let mapNo = i+1
-      let mapData = data[matchID].filter(t => t.mapnumber == mapNo);
+      let mapData = data.filter(t => t.mapnumber == mapNo);
       
       if(mapData.length == 0){
         continue
@@ -115,9 +107,10 @@ async function main(){
       series.data.setAll(mapData);
       series.set("stroke", am5.color(colours[i]));
       series.set("fill", am5.color(colours[i]));
+      
+      
       series.bullets.push(function(root) {
         return am5.Bullet.new(root, {
-
           sprite: am5.Circle.new(root, {
             radius: 2.5,
             fill: am5.color(0x000000)
