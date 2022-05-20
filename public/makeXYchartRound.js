@@ -127,7 +127,7 @@ async function renderRound(){
           sprite: am5.Circle.new(root, {
             radius: 2.5,
             fill: am5.color(0x000000),
-            tooltipText: "[bold]Tick: {tick} - {probabilitytick}% \n {attacker} kills {victim} doing {damage} DMG \n Round% Change {probabilitychange} - ExKill {expectedkill} ",
+            tooltipText: "[bold]Tick: {tick} - {probabilitytick}% \n {attacker} kills {victim} \n Round% Change {probabilitychange} - ExKill {expectedkill} ",
             tooltip: am5.Tooltip.new(root, {
               scale: 1,
               
