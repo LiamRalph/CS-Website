@@ -34,7 +34,7 @@ body
 		p The round model is much more accurate and also is much more useful to look at. It takes into account many diffrent variables such as: equipment value, hp/armour, and average player distance to each bombsite. 
 		h1(class="Title") 
 			| Kill Model (xKills)
-		p The kill model is what started it all, inspired largely by moneypuck's expected goals model, this model looks at the current state of each duel participant, and estimates the chances of each kill. The model uses HP, armour, weapons, velocity, and height differences amongst other things to determine how often the average pro would be successful. One important thing is that the stated damage value on the tooltip is only the value of the last bullet that hit the victim, but the probability calculation takes into account each players HP 3 seconds before the death occured. I'll eventually fix it.
+		p The kill model is what started it all, inspired largely by moneypuck's expected goals model, this model looks at the current state of each duel participant, and estimates the chances of each kill. The model uses HP/Armour, current weapons, angle to opponent, velocity, and height differences amongst other things to determine how often the average pro would be successful. One important thing is that the stated damage value on the tooltip is only the value of the last bullet that hit the victim, but the probability calculation takes into account each players HP 3 seconds before the death occured. I'll eventually fix it.
 
 	include ../partials/footer
 
