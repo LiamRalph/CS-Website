@@ -10,7 +10,7 @@ body()
 	include ../partials/header
 
 	div(class='main', id='main', ids=matchIDs)
-		
+		h1(class="Title") Matches
 		h1(class="navBar")
 			|
 			if beforeAndAfter.before
@@ -18,7 +18,7 @@ body()
 			| &nbsp  #{date} &nbsp
 			if beforeAndAfter.after
 				a(class="dateNav", href='/date/'+beforeAndAfter.after) Next Day 
-			h1(class="Title") Matches
+			
 			div(class="Matches")
 				|
 				each key in matchIDs
