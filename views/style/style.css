@@ -11,6 +11,11 @@ h1.Title{
     margin-bottom: 0%;
     margin-top: 0%;
 }
+h1.TitleBig{
+    font-size: 56pt;
+    margin-bottom: 0%;
+    margin-top: 0%;
+}
 h1.NavBar{
     font-size: 25pt;
     margin-bottom: 2%;

@@ -11,11 +11,11 @@ body
 
 	div(class='main', id='main')
 		
-		h1(class="Title") 
+		h1(class="TitleBig") 
 			| About
 		h1(class="Title") 
 			| Map Model
-		p The model is a gradient boosted classifier built with XGBoost. It is trained on an ~130,000 round, ~6000 Map dataset of tier 1 professional games from 2015-2022. The dataset includes attributes such as Current Score, Loss Streaks, Players alive at the end of the previous round, Team Money, and Current Map. It does not take into account a tams current side, but their starting side. I've found that starting side is a more accurate predictor, which I assume can be attributed to physocological effects, playing t side first and losing the first half leads you to force buy more often out of desperation, but I could be wrong. The model has a logloss of 0.51420.  
+		p The model is a gradient boosted classifier built with XGBoost. It is trained on an ~130,000 round, ~6000 Map dataset of tier 1 professional games from 2015-2022. The dataset includes attributes such as Current Score, Loss Streaks, Players alive at the end of the previous round, Team Money, and Current Map. It does not take into account a tams current side, but their starting side. I've found that starting side is a more accurate predictor, which I assume can be attributed to physocological effects, playing t side first and losing the first half leads you to force buy more often out of desperation, but I could be wrong.  
 
 		h1 
 			| Overtime 
@@ -28,6 +28,13 @@ body
 		h1 
 			| Improvements
 		p To increase model accuracy, I think different sections of maps would need to be broken up into chunks, one for pistol rounds and early in the half, one for when actual buy vs buy rounds happen, one for when a team is nearing victory, and a seperate model for overtime. I have also tried calculating map win probability the same way I did for rounds, taking into account the current rounds win chance, unfortunately it would require too much computing power and take a lot longer to train, and a lot longer to predict each map. There is also a large amount of collinearity between round and map win chances, so I decided to keep them seperate.
+
+		h1(class="Title") 
+			| Round Model
+		p The round model is much more accurate and also is much more useful to look at. It takes into account many diffrent variables such as: equipment value, hp/armour, and average player distance to each bombsite. The few unintuitive results that this model might have, mostly happen during "weird" rounds such as ninja attempts and rounds where teams hunt for saving opponents.
+		h1(class="Title") 
+			| Kill Model
+		p The kill model is what started it all, inspired largely by moneypuck's expected goals model, this model looks at the current state of each duel participant. The model uses HP, armour, weapons, velocity, and height differences amongst other things to determine how often the kill goes the way it did. One important thing is that the stated damage value on the tooltip is only the value of the last bullet that hit the victim, the probability calculation is made taking into account each players HP 3 seconds before the death occured. I'll eventually fix it, but it's low on my priority list.
 
 	include ../partials/footer
 

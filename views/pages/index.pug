@@ -18,6 +18,7 @@ body(onload="main()")
 			| &nbsp  #{date} &nbsp
 			if beforeAndAfter.after
 				a(class="dateNav", href='/date/'+beforeAndAfter.after) Next Day 
+			h1(class="Title") Matches
 			div(class="Matches")
 				|
 				each key in matchIDs
