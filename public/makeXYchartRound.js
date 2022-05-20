@@ -125,9 +125,9 @@ async function renderRound(){
       if (dataItem.dataContext.showBullets == true) {
         return am5.Bullet.new(root, {
           sprite: am5.Circle.new(root, {
-            radius: 2.5,
+            radius: 5,
             fill: am5.color(0x000000),
-            tooltipText: "[bold]Tick: {tick} - {probabilitytick}% \n {attacker} kills {victim} \n Round% Change {probabilitychange} - ExKill {expectedkill} ",
+            tooltipText: "[bold]Tick: {tick} - {probabilitytick}% \n {attacker} kills {victim} \n Round% Change {probabilitychange} - xKill {expectedkill} ",
             tooltip: am5.Tooltip.new(root, {
               scale: 1,
               
