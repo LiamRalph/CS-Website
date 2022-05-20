@@ -87,7 +87,7 @@ async function renderRound(){
 
     xAxis.children.push(
       am5.Label.new(root, {
-        text: "tick",
+        text: "Tick",
         x: am5.percent(52),
         centerX:am5.percent(50),
         fontSize: 20,
@@ -99,11 +99,15 @@ async function renderRound(){
     let colours = [ 0x0000FF, 0xff0000, 0x00FF00, 0x000000, 0xC90076, 0xBC4400, 0xBCA200]
 
 
-    data = data.map(t => ({probabilitytick: (t.probabilitytick*100).toFixed(2), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange*100).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: t.expectedkill}));
-    data = data.filter(t => t.probabilitychange != 50)
+    data = data.map(t => ({probabilitytick: (t.probabilitytick*100).toFixed(2), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange*100).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: t.expectedkill, teammembersalive: t.teammembersalive, opponentsalive: t.opponentsalive}));
+
+    console.log(data)
     for(let i = 0; i < data.length; i++){
       if(data[i].expectedkill > 0){
         data[i].showBullets = true
+        if(data[i].probabilitychange == 50){
+          data[i].probabilitychange = 100;
+        }
       }
       else{
         data[i].showBullets = false
@@ -127,7 +131,7 @@ async function renderRound(){
           sprite: am5.Circle.new(root, {
             radius: 5,
             fill: am5.color(0x000000),
-            tooltipText: "[bold]Tick: {tick} - {probabilitytick}% \n {attacker} kills {victim} \n Round% Change {probabilitychange} - xKill {expectedkill} ",
+            tooltipText: "[bold] {attacker} kills {victim} - {teammembersalive} vs {opponentsalive} - xKill {expectedkill} \n tick {tick} - {probabilitytick}% ± {probabilitychange}%  ",
             tooltip: am5.Tooltip.new(root, {
               scale: 1,
               

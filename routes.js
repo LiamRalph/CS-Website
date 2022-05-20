@@ -148,7 +148,7 @@ module.exports = function(app){
 
     async function getRoundChartData(id, map, round){
         const Query = {
-            text: "SELECT Mat.winner, K.expectedkill, A.name as attacker, V.name as victim, RS.probabilitychange, RS.damage, RS.tick, CASE WHEN RS.ct=T.teamid THEN RS.ctprobability ELSE RS.tprobability END as probabilitytick from roundstates RS inner join maps M on RS.mapid = M.mapid inner join matches Mat on Mat.matchid = M.matchid inner join teams T on T.name = Mat.winner inner join players A on RS.attacker = A.playerid inner join players V on RS.victim = V.playerid left join kills K on K.mapid = M.mapid and K.round = RS.round and K.tick = RS.tick where M.mapid = $1 and RS.round = $2 order by RS.tick ASC",
+            text: "SELECT Mat.winner, K.expectedkill, A.name as attacker, V.name as victim, K.teammembersalive, K.opponentsalive, RS.probabilitychange, RS.damage, RS.tick, CASE WHEN RS.ct=T.teamid THEN RS.ctprobability ELSE RS.tprobability END as probabilitytick from roundstates RS inner join maps M on RS.mapid = M.mapid inner join matches Mat on Mat.matchid = M.matchid inner join teams T on T.name = Mat.winner inner join players A on RS.attacker = A.playerid inner join players V on RS.victim = V.playerid left join kills K on K.mapid = M.mapid and K.round = RS.round and K.tick = RS.tick where M.mapid = $1 and RS.round = $2 order by RS.tick ASC",
             values: [id+'-'+map, round],
         } 
         const res = await pool.query(Query);
