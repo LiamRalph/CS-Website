@@ -17,7 +17,7 @@ module.exports = function(app){
       
     app.use(cors(corsOptions)) 
 
-    //Get homepage
+
     app.get("/", async (req, res, next)=> { 
         let lastDate = await getLastDate();
         let lastMatchDayIDs = await getMatchIDs(lastDate);
@@ -26,16 +26,14 @@ module.exports = function(app){
         res.render("pages/index", {date: new Date(lastDate).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'}), beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: lastMatchDayIDs}); 
     });
       
-    //Get matches on specific date
+
     app.get("/date/:date", async (req, res)=> { 
         let day = req.params.date;
         let matchDayIDs = await getMatchIDs(day);
         let matchData = await getMatchData(matchDayIDs);
         let beforeAndAfterDates = await getDateBeforeAfter(day);
         res.render("pages/index", {date: new Date(day).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'}), beforeAndAfter: beforeAndAfterDates, matches: matchData, matchIDs: matchDayIDs});
-
     });
-
 
     app.get("/match/:match", async (req, res)=> { 
         matchID = parseInt(req.params.match)+2356097
@@ -43,13 +41,40 @@ module.exports = function(app){
         res.render("pages/match", {maps: matchData, matchID: matchID-2356097, date: new Date(matchData[0].date).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})});
     });
 
+    // app.get("/tournaments/:page?", async (req, res)=> { 
+    //     let page = req.params.page ? req.params.page:0;
+    //     let tournaments = getTournaments(page)
+    //     let beforeAndAfterPages = [page+1, page-1]
+    //     res.render("pages/tournaments", {tournaments: tournaments, page: beforeAndAfterPages});
+    // });
 
+    // app.get("/tournament/:tournament", async (req, res)=> { 
+    //     tournamentID = parseInt(req.params.tournament)+6384
+    //     let tournamentData = await getTournamentData(tournamentID);
+    //     res.render("pages/tournament", {tournament: tournamentData, tournamentID: tournament-6384, date: new Date(tournamentData[0].date).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})});
+    // });
+
+    app.get("/about", async (req, res, next)=> { 
+        res.render("pages/about");
+    });
+    app.get("/definitions", async (req, res, next)=> { 
+        res.render("pages/definitions");
+    });
+
+
+    //Fetch requests
     app.get("/data/match/:id", cors(), async (req, res) => {
         matchID = parseInt(req.params.id)+2356097
         let ChartData = await getMatchChartData(matchID);
         res.json(ChartData)
     })
 
+    app.get("/data/match/:id/:map/", cors(), async (req, res) => {
+        let id = parseInt(req.params.id);
+        let map = parseInt(req.params.map);
+        let SummaryData = await getMapSummaryData(id+2356097, map);
+        res.json(SummaryData)
+    })
 
     app.get("/data/match/:id/:map/:round", cors(), async (req, res) => {
         let id = parseInt(req.params.id);
@@ -60,10 +85,9 @@ module.exports = function(app){
     })
 
 
-    app.get("/about", async (req, res, next)=> { 
-        res.render("pages/about");
-    });
 
+    
+    //Queries
 
     async function getLastDate(){
         const latestDateQuery = {
@@ -150,6 +174,15 @@ module.exports = function(app){
         const Query = {
             text: "SELECT Mat.winner, K.expectedkill, A.name as attacker, V.name as victim, K.teammembersalive, K.opponentsalive, RS.probabilitychange, RS.damage, RS.tick, CASE WHEN RS.ct=T.teamid THEN RS.ctprobability ELSE RS.tprobability END as probabilitytick from roundstates RS inner join maps M on RS.mapid = M.mapid inner join matches Mat on Mat.matchid = M.matchid inner join teams T on T.name = Mat.winner inner join players A on RS.attacker = A.playerid inner join players V on RS.victim = V.playerid left join kills K on K.mapid = M.mapid and K.round = RS.round and K.tick = RS.tick where M.mapid = $1 and RS.round = $2 order by RS.tick ASC",
             values: [id+'-'+map, round],
+        } 
+        const res = await pool.query(Query);
+        return res.rows;
+    }
+
+    async function getMapSummaryData(id, map){
+        const Query = {
+            text: "SELECT T.name as teamname, Atck.name, (Atck.xKill+Vict.xKill) as xKills, (Atck.WPA-Vict.WPA)/Map.rounds*100 rWPA, (Atck.xWPA-Vict.xWPA)/Map.rounds*100 as eXrWPA from (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(K.expectedkill) as xKill, sum(K.expectedkill*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.attacker inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Atck inner join (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(1-K.expectedkill) as xKill, sum((1-K.expectedkill)*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.victim inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Vict on Vict.mapid = Atck.mapid and Vict.name = Atck.name inner join (SELECT winnerrounds+loserrounds as Rounds, mapid from maps) as Map on Vict.mapid = Map.mapid inner join player_maps PM on PM.mapid = Map.mapid inner join teams T on T.teamid = PM.teamid where Atck.mapid = $1 and  PM.playerid = Atck.playerid order by eXrWPA DESC",
+            values: [id+'-'+map],
         } 
         const res = await pool.query(Query);
         return res.rows;

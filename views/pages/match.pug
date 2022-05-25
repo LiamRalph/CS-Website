@@ -1,9 +1,12 @@
 html
 	head
-		title #{maps[0].winner} vs. #{maps[0].loser}
+		title CS Reference
 		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
 		script(src="https://cdn.amcharts.com/lib/5/index.js")
 		script(src="https://cdn.amcharts.com/lib/5/xy.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js")
+		
 		style 	
 			include ../style/style.css
 body(onload="renderMap()")
@@ -11,27 +14,43 @@ body(onload="renderMap()")
 
 	div(class='main', id='main', ids=matchID)
 			
-			h1(class="Title") #{maps[0].winner} vs. #{maps[0].loser} @ #{maps[0].tournamentname} 
+			
 			a(href='/date/'+maps[0].date, class="dateNav") #{date}
+			h1(class="Title") #{maps[0].winner} vs. #{maps[0].loser} @ #{maps[0].tournamentname} 
 			each map in maps
 				h1(class="mapScore", rounds=map.winnerrounds + map.loserrounds) #{map.mapname} - #{map.name} win #{map.winnerrounds} - #{map.loserrounds}
 				|
 
 				
-			div(id=matchID+"Container", class="MapChart")
+			div(id=matchID+"ContainerMap", class="MapChart")
 				|
 				h1(class="Title") Round Win Probabilities
-
-				select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
-					option() -- Select a Map -- 
-					each val in maps
-						option=val.mapname
-				select(name='dropDown', id='RoundSelect', onchange="renderRound()")
 				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
-			
+
+			select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
+				option() -- Select a Map -- 
+				each val in maps
+					option=val.mapname
+			select(name='dropDown', id='RoundSelect', onchange="renderRound()")
+
+			div(class="MapSummary")
+				|
+				h1(class="Title") Map Stats
+				table(id="MapTable", class="tablesorter")
+					thead
+						tr
+							th Team 
+							th Name 
+							th xKills 
+							th rWPA 
+							th XrWPA
+					tbody(id="MapTableBody")
+
+
+
 			div(id=matchID+"Container", class="MatchChart")
 				|
-				h1(class="Title") Map Win Probabilities
+				h1(class="Title") Map Win Probability
 				div(class= "NoDataText" id=matchID+"ChartText") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
 				div(class="LegendContainer", id="LegendContainer"+matchID)
 				div(class="Chart", id=matchID.toString(), winner=maps[0].winner) 
@@ -41,6 +60,7 @@ body(onload="renderMap()")
 			div(class= "NoDataText" id=matchID+"ChartTextRound") Not Loading or Missing Data? Data may be invalid (Demo Issues caused by Tech Pauses for example, requiring manual fixing) or not yet modelled
 	script(src="/makeXYchartMap.js")
 	script(src="/makeXYchartRound.js")
+			
 	include ../partials/footer
 
 

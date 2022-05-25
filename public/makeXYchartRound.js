@@ -1,5 +1,12 @@
 async function renderRoundPick(){
+
+  
   document.getElementById("MapSelect").addEventListener("click", updateDrop);
+  document.getElementById("MapSelect").addEventListener("click", summaryTable);
+
+
+
+  
   function updateDrop(){
     let dropdown = document.getElementById("RoundSelect");
     document.getElementById("RoundSelect").innerHTML = "";
@@ -21,6 +28,31 @@ async function renderRoundPick(){
       dropdown.appendChild(option)
     });
   }
+  async function summaryTable(){
+    $("MapTable").trigger("destroy", [false]);
+    let matchID = JSON.parse(document.getElementsByClassName('main')[0].getAttribute('ids'));
+    let mapNo = document.getElementById("MapSelect").selectedIndex;
+    let res = await fetch("/data/match/"+matchID+"/"+mapNo);
+    dataJSON = await res.json();
+    let table = document.getElementById("MapTableBody");
+
+    table.innerHTML="";
+    let tr="";
+    dataJSON.forEach(x=>{
+      tr+='<tr>';
+      tr+='<td>'+x.teamname+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
+      tr+='</tr>'
+    })
+    table.innerHTML+=tr;
+    $("#MapTable").tablesorter({
+      sortList: [[2, 1]]
+    });
+    $('#MapTable').trigger('update');
+    return true;
+  }
+
+  
+
 }
 
 async function renderRound(){
@@ -58,7 +90,7 @@ async function renderRound(){
       am5xy.ValueAxis.new(root, {
         valueField: "probabilitytick",
         min: 0,
-        max: 100,
+        max: 1,
         renderer: am5xy.AxisRendererY.new(root, {
           minGridDistance: 30
         })
@@ -71,7 +103,7 @@ async function renderRound(){
         text: winner.charAt(0).toUpperCase() + winner.slice(1) +" Win%",
         y: am5.p50,
         centerX: am5.p50,
-        fontSize: 20,
+        fontSize: 40,
       })
     );
 
@@ -90,7 +122,7 @@ async function renderRound(){
         text: "Tick",
         x: am5.percent(52),
         centerX:am5.percent(50),
-        fontSize: 20,
+        fontSize: 40,
       })
     );
     
@@ -99,15 +131,12 @@ async function renderRound(){
     let colours = [ 0x0000FF, 0xff0000, 0x00FF00, 0x000000, 0xC90076, 0xBC4400, 0xBCA200]
 
 
-    data = data.map(t => ({probabilitytick: (t.probabilitytick*100).toFixed(2), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange*100).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: t.expectedkill, teammembersalive: t.teammembersalive, opponentsalive: t.opponentsalive}));
+    data = data.map(t => ({probabilitytick: (t.probabilitytick).toFixed(2), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange).toFixed(2)), XrWPA: Math.abs((t.probabilitychange*t.expectedkill).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: t.expectedkill, teammembersalive: t.teammembersalive, opponentsalive: t.opponentsalive}));
 
-    console.log(data)
+
     for(let i = 0; i < data.length; i++){
       if(data[i].expectedkill > 0){
         data[i].showBullets = true
-        if(data[i].probabilitychange == 100){
-          data[i].probabilitychange = "Win";
-        }
       }
       else{
         data[i].showBullets = false
@@ -131,9 +160,9 @@ async function renderRound(){
           sprite: am5.Circle.new(root, {
             radius: 5,
             fill: am5.color(0x000000),
-            tooltipText: "[bold] {attacker} kills {victim} - {teammembersalive} vs {opponentsalive} - xKill {expectedkill} \n tick {tick} - {probabilitytick}% ± {probabilitychange}  ",
+            tooltipText: "[bold] Tick {tick} - {attacker} kills {victim} - {teammembersalive} vs {opponentsalive} \n xKill {expectedkill} - rWPA {probabilitytick} ± {probabilitychange} - XrWPA {XrWPA} ",
             tooltip: am5.Tooltip.new(root, {
-              scale: 1,
+              scale: 0.4,
               
             })
             
@@ -146,4 +175,6 @@ async function renderRound(){
     series.set("stroke", am5.color(colours[mapNo-1]));
     series.set("fill", am5.color(colours[mapNo-1]));
   }
+  document.getElementById(matchID+"ContainerMap").style.display = "inline";
+  return true;
 }

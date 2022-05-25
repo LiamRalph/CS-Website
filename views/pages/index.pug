@@ -2,8 +2,6 @@ html
 	head
 		title CS Reference
 		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
-		script(src="https://cdn.amcharts.com/lib/5/index.js")
-		script(src="https://cdn.amcharts.com/lib/5/xy.js")
 		style 	
 			include ../style/style.css
 body()
@@ -14,7 +12,7 @@ body()
 		h1(class="navBar")
 			|
 			if beforeAndAfter.before
-				a(class="dateNav", href='/date/'+beforeAndAfter.before) Previous Day 
+				a(class="dateNav", href='/date/'+beforeAndAfter.before) Prev Day 
 			| &nbsp  #{date} &nbsp
 			if beforeAndAfter.after
 				a(class="dateNav", href='/date/'+beforeAndAfter.after) Next Day 
@@ -22,7 +20,7 @@ body()
 			div(class="Matches")
 				|
 				each key in matchIDs
-					a(class="matchLink", href='/match/'+key.matchid) #{matches[key.matchid].winner} vs. #{matches[key.matchid].loser} @ #{matches[key.matchid].tournamentname} 
+					a(class="matchLink", href='/match/'+key.matchid) #{matches[key.matchid].winner} vs. #{matches[key.matchid].loser}
 					br
 	include ../partials/footer
 

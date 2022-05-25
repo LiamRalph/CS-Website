@@ -43,21 +43,28 @@ a {
     color: black;
 }
 a.matchLink {
+    margin-bottom: 2%;
+    margin-top: 2%;
     font-size: 32pt;
 }
-h1.date{
-    font-size: 40pt;
-}
+
 h1.mapScore{
     font-size: 20pt;
     margin-bottom: 0%;
     margin-top: 0%;
 }
 a.dateNav{
+    text-align:center;
     font-size: 32pt;
 }
 
 div.MatchChart{
+    font-size: 32pt;
+    margin-bottom: 0%;
+    margin-top: 0%;
+}
+div.MapChart{
+    display: none;
     font-size: 32pt;
     margin-bottom: 0%;
     margin-top: 0%;
@@ -82,4 +89,15 @@ p {
     margin-left: 25%;
     margin-bottom: 0%;
     margin-top: 0%;
+}
+table.tablesorter{
+    margin-left: auto;
+    margin-right: auto;
+
+}
+th,
+td {
+  border: 1px solid black;
+  width: 100px;
+  font-family: "Arial";
 }
