@@ -27,7 +27,7 @@ body(onload="renderMap()")
 				|
 				h1(class="Title") Round Win Probability
 				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
-				
+
 			select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
 				option() -- Select a Map -- 
 				each val in maps
@@ -37,9 +37,9 @@ body(onload="renderMap()")
 			div(class="MapSummary")
 				|
 				h1(class="Title") Map Stats
-				table(id="MapTable", class="tablesorter capitalize")
+				table(id="MapTable", class="tablesorter")
 					thead(id="MapTableHead")
-					tbody(id="MapTableBody")
+					tbody(id="MapTableBody capitalize")
 
 
 
