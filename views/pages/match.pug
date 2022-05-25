@@ -22,18 +22,17 @@ body(onload="renderMap()")
 				|
 
 
+			
+			div(id=matchID+"ContainerMap", class="MapChart")
+				|
+				h1(class="Title") Round Win Probability
+				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
+				
 			select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
 				option() -- Select a Map -- 
 				each val in maps
 					option=val.mapname
 			select(name='dropDown', id='RoundSelect', onchange="renderRound()")
-				
-			div(id=matchID+"ContainerMap", class="MapChart")
-				|
-				h1(class="Title") Round Win Probability
-				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
-
-			
 
 			div(class="MapSummary")
 				|
