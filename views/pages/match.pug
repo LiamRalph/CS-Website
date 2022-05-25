@@ -21,29 +21,25 @@ body(onload="renderMap()")
 				h1(class="mapScore", rounds=map.winnerrounds + map.loserrounds) #{map.mapname} - #{map.name} win #{map.winnerrounds} - #{map.loserrounds}
 				|
 
-				
-			div(id=matchID+"ContainerMap", class="MapChart")
-				|
-				h1(class="Title") Round Win Probabilities
-				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
 
 			select(name='dropDown', id='MapSelect', onchange="renderRoundPick()")
 				option() -- Select a Map -- 
 				each val in maps
 					option=val.mapname
 			select(name='dropDown', id='RoundSelect', onchange="renderRound()")
+				
+			div(id=matchID+"ContainerMap", class="MapChart")
+				|
+				h1(class="Title") Round Win Probability
+				div(class="Chart", id=matchID.toString()+"Round", winner=maps[0].winner) 
+
+			
 
 			div(class="MapSummary")
 				|
 				h1(class="Title") Map Stats
-				table(id="MapTable", class="tablesorter")
-					thead
-						tr
-							th Team 
-							th Name 
-							th xKills 
-							th rWPA 
-							th XrWPA
+				table(id="MapTable", class="tablesorter capitalize")
+					thead(id="MapTableHead")
 					tbody(id="MapTableBody")
 
 

@@ -17,7 +17,7 @@ body
 		p The round model is the most accurate and also the most useful to look at. The models are all gradient boosted classifiers built with XGBoost. The round model is trained on an ~130,000 round, ~3,500,000 roundstate dataset of tier 1 professional games from 2015-2022. It takes into account many diffrent variables such as: equipment value, hp/armour, and average player distance to each bombsite. 
 		h1(class="Title") 
 			| Kill Model
-		p The kill model is what started it all, inspired largely by moneypuck's expected goals model, this model looks at the current state of each duel participant, and estimates the chances of each kill. The model uses HP/Armour, current weapons, angle to opponent, velocity, and height differences amongst other things to determine how often the average pro would be successful. This models dataset is ~1,000,000 kills in size.
+		p The kill model is what started it all, inspired largely by moneypuck's expected goals model, this model looks at the current state of each duel participant, and estimates the chances of each kill. The model uses HP/Armour, current weapons, angle to opponent, velocity, and height differences amongst other things to determine how often the average pro would be successful. The HP value the model uses, is taken 3 seconds before the death happens. This models dataset is ~1,000,000 kills in size.
 		
 		h1(class="Title") 
 			| Map Model

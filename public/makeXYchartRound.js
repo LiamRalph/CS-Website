@@ -3,7 +3,7 @@ async function renderRoundPick(){
   
   document.getElementById("MapSelect").addEventListener("click", updateDrop);
   document.getElementById("MapSelect").addEventListener("click", summaryTable);
-
+  
 
 
   
@@ -28,26 +28,34 @@ async function renderRoundPick(){
       dropdown.appendChild(option)
     });
   }
+
   async function summaryTable(){
-    $("MapTable").trigger("destroy", [false]);
     let matchID = JSON.parse(document.getElementsByClassName('main')[0].getAttribute('ids'));
     let mapNo = document.getElementById("MapSelect").selectedIndex;
     let res = await fetch("/data/match/"+matchID+"/"+mapNo);
     dataJSON = await res.json();
-    let table = document.getElementById("MapTableBody");
 
+    let tableHead = document.getElementById("MapTableHead");
+    tableHead.innerHTML="";
+    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> xKills </th><th> rWPA </th><th> XrWPA </th> </tr>";
+
+    let table = document.getElementById("MapTableBody");
     table.innerHTML="";
     let tr="";
     dataJSON.forEach(x=>{
       tr+='<tr>';
-      tr+='<td>'+x.teamname+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
+      tr+='<td>'+x.teamname.replace('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
       tr+='</tr>'
     })
     table.innerHTML+=tr;
     $("#MapTable").tablesorter({
-      sortList: [[2, 1]]
+      theme: 'default',
+      sortList: [[2, 1]],
+      headerTemplate: '{content}{icon}',
+      widgets: ['zebra', 'uitheme']
     });
-    $('#MapTable').trigger('update');
+    $('#MapTable').trigger('updateAll');
+    
     return true;
   }
 
@@ -92,7 +100,7 @@ async function renderRound(){
         min: 0,
         max: 1,
         renderer: am5xy.AxisRendererY.new(root, {
-          minGridDistance: 30
+          minGridDistance: 40
         })
       })
     );
@@ -120,7 +128,7 @@ async function renderRound(){
     xAxis.children.push(
       am5.Label.new(root, {
         text: "Time",
-        x: am5.percent(52),
+        x: am5.percent(50),
         centerX:am5.percent(50),
         fontSize: 40,
       })

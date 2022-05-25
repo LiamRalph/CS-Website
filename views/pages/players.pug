@@ -3,7 +3,11 @@ html
 		title CS Reference
 		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.blackice.min.css")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js")
+		
 		style 	
 			include ../style/style.css
 body(onload="tableSorter()")
@@ -13,16 +17,9 @@ body(onload="tableSorter()")
 		
 		div(class="MapSummary")
 				|
-				h1(class="Title") Player Stats (Last 2 Weeks)
-				table(id="MapTable", class="tablesorter")
-					thead
-						tr
-							th Team 
-							th Name 
-							th Maps
-							th xKills 
-							th rWPA 
-							th XrWPA
+				h1(class="Title") Player Stats Per Map (Last 2 Weeks)
+				table(id="MapTable", class="tablesorter capitalize")
+					thead(id="MapTableHead")
 					tbody(id="MapTableBody")
 
 	script(src="/tableSorter.js")
