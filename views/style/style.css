@@ -95,9 +95,13 @@ table.tablesorter{
     margin-right: auto;
 
 }
-th,
-td {
+th{
   border: 1px solid black;
   width: 100px;
   font-family: "Arial";
+}
+td {
+    text-align:center;
+    width: 100px;
+    font-family: "Arial";
 }

@@ -60,10 +60,18 @@ module.exports = function(app){
     app.get("/definitions", async (req, res, next)=> { 
         res.render("pages/definitions");
     });
+    app.get("/players", async (req, res, next)=> {
+        res.render("pages/players");
+    });
+
 
 
     //Fetch requests
-    app.get("/data/match/:id", cors(), async (req, res) => {
+    app.get("/data/players/", cors(), async (req, res) => {
+        let playerData = await getPlayerSummaryData() 
+        res.json(playerData)
+    })
+    app.get("/data/match/:id/", cors(), async (req, res) => {
         matchID = parseInt(req.params.id)+2356097
         let ChartData = await getMatchChartData(matchID);
         res.json(ChartData)
@@ -76,7 +84,7 @@ module.exports = function(app){
         res.json(SummaryData)
     })
 
-    app.get("/data/match/:id/:map/:round", cors(), async (req, res) => {
+    app.get("/data/match/:id/:map/:round/", cors(), async (req, res) => {
         let id = parseInt(req.params.id);
         let map = parseInt(req.params.map);
         let round = parseInt(req.params.round);
@@ -183,6 +191,14 @@ module.exports = function(app){
         const Query = {
             text: "SELECT T.name as teamname, Atck.name, (Atck.xKill+Vict.xKill) as xKills, (Atck.WPA-Vict.WPA)/Map.rounds*100 rWPA, (Atck.xWPA-Vict.xWPA)/Map.rounds*100 as eXrWPA from (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(K.expectedkill) as xKill, sum(K.expectedkill*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.attacker inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Atck inner join (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(1-K.expectedkill) as xKill, sum((1-K.expectedkill)*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.victim inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Vict on Vict.mapid = Atck.mapid and Vict.name = Atck.name inner join (SELECT winnerrounds+loserrounds as Rounds, mapid from maps) as Map on Vict.mapid = Map.mapid inner join player_maps PM on PM.mapid = Map.mapid inner join teams T on T.teamid = PM.teamid where Atck.mapid = $1 and  PM.playerid = Atck.playerid order by eXrWPA DESC",
             values: [id+'-'+map],
+        } 
+        const res = await pool.query(Query);
+        return res.rows;
+    }
+
+    async function getPlayerSummaryData(){
+        const Query = {
+            text: "SELECT T.name as teamname, Atck.name, count(Map.mapid) as maps, sum(Atck.xKill+Vict.xKill)/count(Map.mapid) as xKills, sum((Atck.WPA-Vict.WPA)/Map.rounds*100)/count(Map.mapid) rWPA, sum((Atck.xWPA-Vict.xWPA)/Map.rounds*100)/count(Map.mapid) as eXrWPA from (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(K.expectedkill) as xKill, sum(K.expectedkill*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.attacker inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Atck inner join (SELECT P.name, P.playerid, rs.mapid, sum(RS.probabilitychange) as WPA, sum(1-K.expectedkill) as xKill, sum((1-K.expectedkill)*RS.probabilitychange) as xWPA from roundstates RS inner join players P on P.playerid = RS.victim inner join kills K on K.mapid = RS.mapid and K.round = RS.round and K.tick = RS.tick where RS.attacker != -1 and RS.victim != -1 group by P.name, P.playerid, rs.mapid) as Vict on Vict.mapid = Atck.mapid and Vict.name = Atck.name inner join (SELECT winnerrounds+loserrounds as Rounds, mapid, matchid from maps) as Map on Vict.mapid = Map.mapid inner join player_maps PM on PM.mapid = Map.mapid inner join matches Mat on Mat.matchid = Map.matchid inner join teams T on T.teamid = PM.teamid where PM.playerid = Atck.playerid and Mat.date > CURRENT_DATE - 14 group by T.name, Atck.name order by eXrWPA DESC"
         } 
         const res = await pool.query(Query);
         return res.rows;

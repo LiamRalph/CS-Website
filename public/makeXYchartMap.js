@@ -77,7 +77,7 @@ async function renderMap(){
     
 
 
-    let colours = [ 0x0000FF, 0xff0000, 0x00FF00, 0x000000, 0xC90076, 0xBC4400, 0xBCA200]
+    let colours = [ 0x0000FF, 0xff0000, 0xC90076, 0xBC4400, 0x000000, 0x00FF00, 0xBCA200]
 
 
     for(var i=0; i < mapCount; i++){
