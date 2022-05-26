@@ -3,8 +3,8 @@ async function renderRoundPick(){
   
   document.getElementById("MapSelect").addEventListener("click", updateDrop);
   document.getElementById("MapSelect").addEventListener("click", summaryTable);
-  
-
+  updateDrop();
+  summaryTableDrop();
 
   
   function updateDrop(){
