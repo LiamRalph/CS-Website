@@ -147,6 +147,9 @@ module.exports = function(app){
                 values: [matchID.matchid+2356097],
             } 
             const res = await pool.query(Query);
+            res.rows[0].winner = res.rows[0].winner.replaceAll("-", " ")
+            res.rows[0].loser = res.rows[0].loser.replaceAll("-", " ")
+            res.rows[0].tournamentname = res.rows[0].tournamentname.replaceAll("-", " ")
             matches[matchID.matchid] = res.rows[0];
         }
         return matches
@@ -171,6 +174,10 @@ module.exports = function(app){
         const res = await pool.query(Query);
         mapData = []
         for(var i=0; i < res.rows.length; i++){
+            res.rows[i].winner = res.rows[i].winner.replaceAll("-", " ")
+            res.rows[i].loser = res.rows[i].loser.replaceAll("-", " ")
+            res.rows[i].tournamentname = res.rows[i].tournamentname.replaceAll("-", " ")
+            res.rows[i].name = res.rows[i].name.replaceAll("-", " ")
             mapData[i] = res.rows[i];
         }
         
