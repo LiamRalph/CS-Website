@@ -99,7 +99,7 @@ module.exports = function(app){
 
     async function getLastDate(){
         const latestDateQuery = {
-            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) order by date DESC limit 1;"
+            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) and date > '2022-05-08'::date order by date DESC limit 1;"
         }
         const res = await pool.query(latestDateQuery)
         return res.rows[0].date
@@ -168,7 +168,7 @@ module.exports = function(app){
     
     async function getMapData(matchID){
         const Query = {
-            text: "SELECT TO_CHAR(Mat.date, 'YYYY-MM-DD') as date, Mat.winner, Mat.loser, Mat.tournamentname, T.name, M.mapname, M.winnerrounds, M.loserrounds from matches Mat inner join maps M on M.matchid = Mat.matchid inner join teams T on T.teamid = M.winnerid where Mat.matchid = $1",
+            text: "SELECT TO_CHAR(Mat.date, 'YYYY-MM-DD') as date, Mat.winner, Mat.loser, Mat.tournamentname, T.name, M.mapname, M.winnerrounds, M.loserrounds from matches Mat inner join maps M on M.matchid = Mat.matchid inner join teams T on T.teamid = M.winnerid where Mat.matchid = $1 order by M.mapnumber",
             values: [matchID],
         } 
         const res = await pool.query(Query);
