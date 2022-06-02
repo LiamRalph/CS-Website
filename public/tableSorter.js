@@ -10,7 +10,7 @@ async function tableSorter(){
     let table = document.getElementById("MapTableBody");
     table.innerHTML="";
     let tr="";
-    dataJSON.forEach(x=>{
+    dataJSON.filter(({maps}) => maps > 2).forEach(x=>{
         tr+='<tr>';
         tr+='<td>'+x.teamname.replaceAll('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.maps+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
         tr+='</tr>'
