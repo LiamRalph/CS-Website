@@ -5,7 +5,7 @@ async function tableSorter(){
     let dataJSON = await res.json();
 
     let tableHead = document.getElementById("MapTableHead");
-    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> Maps </th><th> xKills </th><th> rWPA </th><th> XrWPA </th> </tr>";
+    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> Maps </th><th> xKills </th><th> RAR </th><th> xRAR </th> </tr>";
 
     let table = document.getElementById("MapTableBody");
     table.innerHTML="";
