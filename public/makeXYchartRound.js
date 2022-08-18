@@ -4,7 +4,7 @@ async function renderRoundPick(){
   document.getElementById("MapSelect").addEventListener("click", updateDrop);
   document.getElementById("MapSelect").addEventListener("click", summaryTable);
   updateDrop();
-  summaryTableDrop();
+  summaryTable();
 
   
   function updateDrop(){
@@ -37,14 +37,14 @@ async function renderRoundPick(){
 
     let tableHead = document.getElementById("MapTableHead");
     tableHead.innerHTML="";
-    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> xKills </th><th> RAR </th><th> xRAR </th> </tr>";
+    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> xKills </th><th> RAR </th><th> xRAR </th> <th> RAR above xRAR </th> </tr>";
 
     let table = document.getElementById("MapTableBody");
     table.innerHTML="";
     let tr="";
     dataJSON.forEach(x=>{
       tr+='<tr>';
-      tr+='<td>'+x.teamname.replace('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
+      tr+='<td>'+x.teamname.replaceAll('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'% </td>' +'<td>'+x.exrwpa.toFixed(2)+'% </td>' +'<td>'+(x.rwpa-x.exrwpa).toFixed(2)+' </td>'
       tr+='</tr>'
     })
     table.innerHTML+=tr;
@@ -169,7 +169,7 @@ async function renderRound(){
           sprite: am5.Circle.new(root, {
             radius: 5,
             fill: am5.color(0x000000),
-            tooltipText: "{attacker} kills {victim} - xKill {expectedkill} \nTick {tick} - {time} - {teammembersalive} vs {opponentsalive} \nrWPA {probabilitytick} ± {probabilitychange} - XrWPA {XrWPA} ",
+            tooltipText: "Tick {tick} - {time} - {teammembersalive} vs {opponentsalive} \n{attacker} kills {victim} - xKill {expectedkill} \nrWPA {probabilitytick} ± {probabilitychange} - XrWPA {XrWPA} ",
             tooltip: am5.Tooltip.new(root, {
               scale: 0.4,
             })

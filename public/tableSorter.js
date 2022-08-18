@@ -5,14 +5,14 @@ async function tableSorter(){
     let dataJSON = await res.json();
 
     let tableHead = document.getElementById("MapTableHead");
-    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> Maps </th><th> xKills </th><th> RAR </th><th> xRAR </th> </tr>";
+    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> Maps </th><th> xKills </th><th> RAR </th><th> xRAR </th> <th> RAR above xRAR </th></tr>";
 
     let table = document.getElementById("MapTableBody");
     table.innerHTML="";
     let tr="";
     dataJSON.filter(({maps}) => maps > 2).forEach(x=>{
         tr+='<tr>';
-        tr+='<td>'+x.teamname.replaceAll('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.maps+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'</td>' +'<td>'+x.exrwpa.toFixed(2)+'</td>'
+        tr+='<td>'+x.teamname.replaceAll('-', ' ')+'</td>'+'<td>'+x.name+'</td>'+'<td>'+x.maps+'</td>'+'<td>'+x.xkills.toFixed(2)+'</td>' +'<td>'+x.rwpa.toFixed(2)+'% </td>' +'<td>'+x.exrwpa.toFixed(2)+'% </td>' +'<td>'+(x.rwpa-x.exrwpa).toFixed(2)+' </td>'
         tr+='</tr>'
     })
     table.innerHTML+=tr;
