@@ -18,7 +18,7 @@ async function tableSorter(){
     table.innerHTML+=tr;
     $("#MapTable").tablesorter({
         theme: 'default',
-        sortList: [[3, 1]],
+        sortList: [[6, 1]],
         headerTemplate: '{content}{icon}',
         widgets: ['zebra', 'uitheme']
     });

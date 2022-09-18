@@ -50,7 +50,7 @@ async function renderRoundPick(){
     table.innerHTML+=tr;
     $("#MapTable").tablesorter({
       theme: 'default',
-      sortList: [[2, 1]],
+      sortList: [[5, 1]],
       headerTemplate: '{content}{icon}',
       widgets: ['zebra', 'uitheme']
     });
