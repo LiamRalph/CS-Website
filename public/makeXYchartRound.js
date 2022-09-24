@@ -139,7 +139,7 @@ async function renderRound(){
     let colours = [ 0x0000FF, 0xff0000, 0xC90076, 0xBC4400, 0x000000, 0x00FF00, 0xBCA200]
 
     function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
-    data = data.map(t => ({probabilitytick: (t.probabilitytick).toFixed(2), time: fmtMSS((t.tick/128).toFixed(0)), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange).toFixed(2)), XrWPA: Math.abs((t.probabilitychange*t.expectedkill).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: (t.expectedkill).toFixed(2), teammembersalive: t.teammembersalive, opponentsalive: t.opponentsalive}));
+    data = data.map(t => ({probabilitytick: (t.probabilitytick).toFixed(2), time: fmtMSS((t.tick/128).toFixed(0)), tick: t.tick, attacker: t.attacker.charAt(0).toUpperCase()+t.attacker.slice(1), victim: t.victim.charAt(0).toUpperCase()+t.victim.slice(1), damage: t.damage, probabilitychange: Math.abs((t.probabilitychange).toFixed(2)), XrWPA: Math.abs((t.probabilitychange*t.expectedkill).toFixed(2)), winner: t.winner.charAt(0).toUpperCase()+t.winner.slice(1), expectedkill: Math.abs(t.expectedkill).toFixed(2), teammembersalive: t.teammembersalive, opponentsalive: t.opponentsalive}));
 
     
 
