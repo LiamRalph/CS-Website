@@ -37,7 +37,7 @@ async function renderRoundPick(){
 
     let tableHead = document.getElementById("MapTableHead");
     tableHead.innerHTML="";
-    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> xKills </th><th> RIAA </th><th> xRIAA </th> <th> RIAA above xRIAA </th> </tr>";
+    tableHead.innerHTML="<tr><th> Team </th><th> Name </th><th> xKills </th><th> RI </th><th> xRI </th> <th> RI above xRI </th> </tr>";
 
     let table = document.getElementById("MapTableBody");
     table.innerHTML="";
