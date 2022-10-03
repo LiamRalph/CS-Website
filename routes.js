@@ -4,11 +4,11 @@ module.exports = function(app){
     require('dotenv').config()
     const { Pool } = require('pg');
     const pool = new Pool({
-        host: process.env.DB_IP,
-        user: 'postgres',
-        password: process.env.DB_PASS,
-        port: 5432,
-        database: 'CSGO',
+        host: process.env.DB_HOST_DO,
+        user: process.env.DB_USER_DO,
+        password: process.env.DB_PASS_DO,
+        port: process.env.DB_PORT_DO,
+        database: process.env.DB_NAME_DO,
     });
     pool.connect()
     const corsOptions = {
