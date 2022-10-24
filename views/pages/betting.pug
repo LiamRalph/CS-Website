@@ -14,25 +14,27 @@ body
 		h1(class="Title") 
 			| Current Stats
 		p 
+			| Matches: 114 Bets / 269 Matches
+			br
 			| Veto Accuracy: 60.5%
 			br
 			| Match Accuracy: 62.7%
 			br
-			| Map Accuracy: 56.8%
+			| Map Accuracy: 57.4%
 			br
 			| Return on Investment: 13.1% 
 		h1(class="Title") 
 			| Predicting Games
 		p The betting model is another model that takes a variety of inputs relating to the performance of pro teams. Stats are pulled from the 30 day window before the match. Some stats include Anti/Eco Win Rates, Monetary Efficiency, and AWP Reliance. The model and it's strategy have been tested on every pro game between May 9th, 2022 and October 16th, 2022.
 		h1(class="Title") 
-			| Vetoes
-		p For each game, a veto is simulated in order to narrow down on which maps could be played, and therefore narrowing the scope of the predicition the model needs to make. The veto is simulated by ordering maps for each team by taking winrate multiplied by playrate. Teams then proceed to the usual veto process, using the calculation, until they arrive on the number of maps required. In testing, this prediction will get 60.5% of the actual maps right, compared to the baseline random choice getting 42.85% of the maps right. 
+			| Vetos
+		p For each game, a veto is simulated in order to narrow down on which maps could be played, and therefore narrowing the scope of the predicition the model needs to make. The veto is simulated by ordering maps for each team by taking winrate multiplied by playrate. In testing, this prediction means that 50% of maps used in the prediction were actual maps played, meaning they had an effect on the reult, compared to the baseline 3/7 picking random maps would have of 42.85% (in a bo3) or 14.28% (in bo1). Even so, map selection only affects a small portion of the inputs.  
 		h1(class="Title") 
 			| Getting the odds
 		p Once the veto is complete, the model will pull specific stats for the maps that have been chosen, such as round winrate. The model will then predict the win chances for each team, on each map that is expected to be played. As the veto is not specific in map order, all maps are treated equally and the win chances are averaged, and the reciprocal is taken to get the odds.
 		h1(class="Title") 
 			| Betting Strategy
-		p After the model's odds are calculated, they are then compared with sportsbook odds to see where any value may lie. Once a match is found with differeing odds, the Kelly Criterion is used to calculate bet size.
+		p After the model's odds are calculated, they are then compared with sportsbook odds to see where any value may lie. As a way to prevent single games causing bankruptcy, and as a way to have a confidence level in the model, book and model odds are compared, and matches are discarded if model odds are lower than book odds by a percentage, 33% currently. The Kelly Criterion is then used to calculate bet size, using a coefficient of 1, though scaling down betsize is often recommended, usually by a factor of 4.
 	include ../partials/footer
 
 
