@@ -4,8 +4,7 @@ module.exports = function(app){
     require('dotenv').config()
     const { Pool } = require('pg');
     const pool = new Pool({
-        connectionString: process.env.DB_STRING_DO,
-        ssl: { rejectUnauthorized: false }
+        connectionString: process.env.DB_STRING,
     });
     pool.connect()
     const corsOptions = {
@@ -51,8 +50,11 @@ module.exports = function(app){
     //     res.render("pages/tournament", {tournament: tournamentData, tournamentID: tournament-6384, date: new Date(tournamentData[0].date).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})});
     // });
 
-    app.get("/about", async (req, res, next)=> { 
-        res.render("pages/about");
+    app.get("/models", async (req, res, next)=> { 
+        res.render("pages/models");
+    });
+    app.get("/betting", async (req, res, next)=> { 
+        res.render("pages/betting");
     });
     app.get("/definitions", async (req, res, next)=> { 
         res.render("pages/definitions");
@@ -96,7 +98,7 @@ module.exports = function(app){
 
     async function getLastDate(){
         const latestDateQuery = {
-            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) and date > '2022-05-08'::date order by date DESC limit 1;"
+            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) and date > '2020-01-01'::date order by date DESC limit 1;"
         }
         const res = await pool.query(latestDateQuery)
         return res.rows[0].date
@@ -105,7 +107,7 @@ module.exports = function(app){
     async function getDateBeforeAfter(date){
         ret = {}
         const beforeQuery = {
-            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) and match.date < $1 and match.date > '2022-05-08'::date order by date DESC limit 1;",       
+            text: "SELECT TO_CHAR(date, 'YYYY-MM-DD') as date from matches Match where exists(select 1 from roundstates RS inner join maps Map on Map.matchid = Match.matchid where RS.mapid = Map.mapid) and match.date < $1 and match.date > '2014-05-08'::date order by date DESC limit 1;",       
             values: [date],
         }
         const afterQuery = {

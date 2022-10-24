@@ -1,0 +1,33 @@
+html
+	head
+		title CS Reference
+		link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Bebas+Neue")
+		script(src="https://cdn.amcharts.com/lib/5/index.js")
+		script(src="https://cdn.amcharts.com/lib/5/xy.js")
+		style 	
+			include ../style/style.css
+body
+	include ../partials/header
+
+	div(class='main', id='main')
+		
+		h1(class="Title") 
+			| Current Stats
+		p Match Accuracy: 
+			| Map Accuracy: 
+			| Veto Accuracy: 
+		h1(class="Title") 
+			| Predicting Games
+		p The betting model is another model that takes a variety of inputs relating to the performance of pro teams. Stats are pulled from the 30 day window before the match. Some stats include Anti/Eco Win Rates, Monetary Efficiency, and AWP Reliance. The model and it's strategy have been tested on every pro game between May 9th, 2022 and October 16th, 2022.
+		h1(class="Title") 
+			| Vetoes
+		p For each game, a veto is simulated in order to narrow down on which maps could be played, and therefore narrowing the scope of the predicition the model needs to make. The veto is simulated by ordering maps for each team by taking winrate multiplied by playrate. Teams then proceed to the usual veto process, using the calculation, until they arrive on the number of maps required. In testing, this prediction will get 60.5% of the actual maps right, compared to the baseline random choice getting 42.85% of the maps right. 
+		h1(class="Title") 
+			| Getting the odds
+		p Once the veto is complete, the model will pull specific stats for the maps that have been chosen, such as round winrate. The model will then predict the win chances for each team, on each map that is expected to be played. As the veto is not specific in map order, all maps are treated equally and the win chances are averaged, and the reciprocal is taken to get the odds.
+		h1(class="Title") 
+			| Betting Strategy
+		p After the model's odds are calculated, they are then compared with sportsbook odds to see where any value may lie. Once a match is found with differeing odds, the Kelly Criterion is used to calculate bet size.
+	include ../partials/footer
+
+
