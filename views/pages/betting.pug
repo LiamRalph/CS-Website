@@ -26,10 +26,10 @@ body
 		p The betting model is another model that takes a variety of inputs relating to the performance of pro teams. Stats are pulled from the 30 day window before the match. Some stats include Anti/Eco Win Rates, Monetary Efficiency, and AWP Reliance. The model and it's strategy have been tested on every pro game between May 9th, 2022 and October 16th, 2022.
 		h1(class="Title") 
 			| Getting the odds
-		p For each game, each map of the map pool is simulated. The model will pull specific stats for each map, such as round winrate. The model will then predict the win chances for each team, on each map. Currently, model uses the maps that were picked to get the win chances, and then the reciprocal is taken to get the odds. There are a few different strategies, you can take the odds from all 7 maps and weight them evenely, you could ismulate a veto, but for now my strategy is to wait for the actual veto, and equally weight those maps.
+		p For each game, each map of the map pool is simulated. The model will pull specific stats for each map, such as round winrate. The model will then predict the win chances for each team, on each map. Currently, model uses the maps that were picked to get the win chances, and then the reciprocal is taken to get the odds. There are a few different strategies, you can take the odds from all 7 maps and weight them evenely, you could ismulate a veto, but for now my strategy is to wait for the actual veto, and equally weight those maps, and just dealing with the odds shift.
 		h1(class="Title") 
 			| Betting Strategy
-		p After the model's odds are calculated, they are then compared with sportsbook odds to see where any value may lie. As a way to prevent single games causing bankruptcy, the Kelly Criterion is then used to calculate bet size, using a coefficient of 1, although scaling down betsize is often recommended, usually by a factor of 4.
+		p After the model's odds are calculated, they are then compared with sportsbook odds to see where any value may lie. As a way to prevent single games causing bankruptcy, the Kelly Criterion is then used to calculate bet size, using a coefficient of 4.
 	include ../partials/footer
 
 
