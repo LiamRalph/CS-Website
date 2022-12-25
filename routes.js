@@ -50,8 +50,8 @@ module.exports = function(app){
     //     res.render("pages/tournament", {tournament: tournamentData, tournamentID: tournament-6384, date: new Date(tournamentData[0].date).toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})});
     // });
 
-    app.get("/models", async (req, res, next)=> { 
-        res.render("pages/models");
+    app.get("/about", async (req, res, next)=> { 
+        res.render("pages/about");
     });
     app.get("/betting", async (req, res, next)=> { 
         res.render("pages/betting");
