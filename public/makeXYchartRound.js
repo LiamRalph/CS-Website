@@ -172,7 +172,7 @@ async function renderRound(){
             radius: 5,
             fill: am5.color(0x000000),
             
-            tooltipText: "Tick {tick} - {time} - {teammembersalive} vs {opponentsalive} \n{attacker} kills {victim} - xKill {expectedkill} % \nRI {probabilitytick} % ± {probabilitychange} % - xRI {XrWPA} % ",
+            tooltipText: "Tick {tick} - {time} - {teammembersalive} vs {opponentsalive} \n{attacker} kills {victim} - xKill {expectedkill}% \nRI {probabilitytick}% ± {probabilitychange}% - xRI {XrWPA}% ",
             tooltip: am5.Tooltip.new(root, {
               scale: 0.4,
             })
