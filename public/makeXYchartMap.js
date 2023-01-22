@@ -58,7 +58,7 @@ async function renderMap(){
     var xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
         valueField: "round",
-        min: 1,
+        min: 1.5,
         max: roundMax,
         renderer: am5xy.AxisRendererX.new(root, {
           minGridDistance: roundMax*2.5
@@ -88,19 +88,23 @@ async function renderMap(){
         continue
       }
       let mapName = mapData[0].mapname
-      mapData = mapData.map(t => ({probabilitymap: (t.probabilitymap*100).toFixed(2), round: t.round, score: t.ctstartscore + "-" + t.tstartscore}));
-      
+      mapData = mapData.map(t => ({probabilitymap: (t.probabilitymap*100).toFixed(2), round: t.round, tick: t.tick, roundprog: t.roundprog, score: t.ctstartscore + "-" + t.tstartscore}));
+      for(let i = 0; i < mapData.length; i++){
+        if(mapData[i].tick == 0){
+          mapData[i].showBullets = true
+        }
+        else{
+          mapData[i].showBullets = false
+        }
+      }
+
       var series = chart.series.push(
         am5xy.SmoothedXYLineSeries.new(root, {
           name: mapName,
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "probabilitymap",
-          valueXField: "round",
-          tooltip: am5.Tooltip.new(root, {
-            scale: 0.5,
-            labelText: "[bold]{name} - Round {round} \n {score} - {probabilitymap}%"
-          })
+          valueXField: "roundprog",
         })
       );
       
@@ -109,13 +113,21 @@ async function renderMap(){
       series.set("fill", am5.color(colours[i]));
       
       
-      series.bullets.push(function(root) {
-        return am5.Bullet.new(root, {
-          sprite: am5.Circle.new(root, {
-            radius: 2.5,
-            fill: am5.color(0x000000)
-          })
-        });
+      series.bullets.push(function(root, series, dataItem) {
+        if (dataItem.dataContext.showBullets == true) {
+          return am5.Bullet.new(root, {
+            sprite: am5.Circle.new(root, {
+              radius: 5,
+              fill: am5.color(0x000000),
+              
+              tooltipText: "[bold]{name} - Round {round} \n {score} - {probabilitymap}%",
+              tooltip: am5.Tooltip.new(root, {
+                scale: 0.4,
+              })
+              
+            })
+          });
+        }
       });
       
       renderCount += 1;
