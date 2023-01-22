@@ -104,7 +104,9 @@ async function renderRound(){
         })
       })
     );
-
+    yAxis.get("renderer").labels.template.setAll({
+      fontSize: 30,
+    });
     yAxis.children.unshift(
       am5.Label.new(root, {
         rotation: -90,
@@ -114,7 +116,7 @@ async function renderRound(){
         fontSize: 40,
       })
     );
-
+    
     var xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
         valueField: "tick",
@@ -125,7 +127,9 @@ async function renderRound(){
         }),
       })
     );
-
+    xAxis.get("renderer").labels.template.setAll({
+      fontSize: 20,
+    });
     xAxis.children.push(
       am5.Label.new(root, {
         text: "Tick",

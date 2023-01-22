@@ -44,7 +44,9 @@ async function renderMap(){
         })
       })
     );
-
+    yAxis.get("renderer").labels.template.setAll({
+      fontSize: 30,
+    });
     yAxis.children.unshift(
       am5.Label.new(root, {
         rotation: -90,
@@ -55,17 +57,21 @@ async function renderMap(){
       })
     );
 
+
+    
     var xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
         valueField: "round",
-        min: 1.5,
+        min: 1,
         max: roundMax,
         renderer: am5xy.AxisRendererX.new(root, {
-          minGridDistance: roundMax*2.5
+          minGridDistance: roundMax
         }),
       })
     );
-
+    xAxis.get("renderer").labels.template.setAll({
+      fontSize: 20,
+    });
     xAxis.children.push(
       am5.Label.new(root, {
         text: "Round",
