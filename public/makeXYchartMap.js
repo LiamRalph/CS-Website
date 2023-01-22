@@ -97,9 +97,9 @@ async function renderMap(){
           mapData[i].showBullets = false
         }
       }
-      let hidden = false
+      let hidden = true
       if(mapNo > 1){
-        hidden = true
+        hidden = false
       }
       var series = chart.series.push(
         am5xy.SmoothedXYLineSeries.new(root, {
@@ -108,7 +108,7 @@ async function renderMap(){
           yAxis: yAxis,
           valueYField: "probabilitymap",
           valueXField: "roundprog",
-          hidden: hidden,
+          visible: hidden,
         })
       );
       
