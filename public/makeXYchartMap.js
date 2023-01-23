@@ -94,7 +94,7 @@ async function renderMap(){
         continue
       }
       let mapName = mapData[0].mapname
-      mapData = mapData.map(t => ({probabilitymap: (t.probabilitymap*100).toFixed(2), round: t.round, tick: t.tick, roundprog: t.roundprog, score: t.ctstartscore + "-" + t.tstartscore}));
+      mapData = mapData.map(t => ({probabilitymap: (t.probabilitymap*100).toFixed(2), round: t.round, tick: t.tick, roundprog: t.roundprog, score: t.winnerscore + "-" + t.loserscore}));
       for(let i = 0; i < mapData.length; i++){
         if(mapData[i].tick == 0){
           mapData[i].showBullets = true
