@@ -1,5 +1,5 @@
 * {
-    background-color: darkgrey
+    background-color: black
 }
 .header {
     text-align:center;
@@ -43,7 +43,7 @@ body {
 }
 
 a {
-    color: black;
+    color: white;
 }
 a.matchLink {
     margin-bottom: 2%;
@@ -87,7 +87,7 @@ div.LegendContainer{
 
 p {
     font-family: "Arial";
-    color: black;
+    color: white;
     margin-right: 25%;
     margin-left: 25%;
     margin-bottom: 0%;
