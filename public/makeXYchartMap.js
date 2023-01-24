@@ -17,7 +17,7 @@ async function renderMap(){
     let renderCount = 0;
   
     let mapCount = Math.max.apply(this, [...new Set(data.map(rounds => rounds.mapnumber))]);
-    let roundMax = Math.max.apply(this, [...new Set(data.map(rounds => rounds.round))])+2;
+    let roundMax = Math.max.apply(this, [...new Set(data.map(rounds => rounds.round))])+1;
     
   
 
