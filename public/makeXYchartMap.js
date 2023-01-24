@@ -17,7 +17,7 @@ async function renderMap(){
     let renderCount = 0;
   
     let mapCount = Math.max.apply(this, [...new Set(data.map(rounds => rounds.mapnumber))]);
-    let roundMax = Math.max.apply(this, [...new Set(data.map(rounds => rounds.round))]);
+    let roundMax = Math.max.apply(this, [...new Set(data.map(rounds => rounds.round))])+2;
     
   
 
@@ -56,16 +56,19 @@ async function renderMap(){
         fontSize: 20,
       })
     );
-
-
+    let roundSpace = 35
+    if(roundMax > 25){
+      roundSpace = roundMax+10
+    }
     
     var xAxis = chart.xAxes.push(
       am5xy.ValueAxis.new(root, {
         valueField: "round",
         min: 1,
         max: roundMax,
+        maxPrecision: 0,
         renderer: am5xy.AxisRendererX.new(root, {
-          minGridDistance: roundMax
+          minGridDistance: roundSpace
         }),
       })
     );
